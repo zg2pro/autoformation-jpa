@@ -1,0 +1,35 @@
+Nous allons utiliser Jboss 4.2 comme serveur d’application et Eclipse 3.3 (Aka Europa) comme IDE. Pour ce tutorial, le choix d’Eclipse 3.3 ne me semble pas être indispensable, il doit être possible de rester avec la version 3.2.
+
+Qui dit persistance, dit base de données : le tutorial s’appuie sur la base livrée en standard avec Jboss 4.2 : Hypersonic Database (autrement appelé HSqlDb). Je ne considère pas cette base comme une base de production, elle est en revanche très pratique pour les tests et l’apprentissage. J’ai écris récemment un article afin de faciliter l’analyse et la résolution des problèmes lors de son utilisation : Tutorial HSqlDb pour Jboss 4.2, Hibernate et les EJB 3.0 Entity
+Configuration de la base HSqlDb
+
+Ce tutorial fonctionne dans le contexte de Jboss 4.2, même si pour cette première phase nous n’utiliserions pas le serveur d’applications afin d’alléger les tests. Nous allons néanmoins nous appuyer sur la structure de Jboss pour configurer HSqlDb.
+
+Dans le répertoire C:\jboss-4.2.0.GA\server\default\data\hypersonic de jboss, on crée un fichier server.properties.
+
+Son contenu devra être :
+
+server.database.0 file:./jpatest
+server.dbname.0 jpatest
+server.database.1 file:./localDB
+server.dbname.1 localDB
+server.database.2 file:./default
+server.dbname.2 default
+
+Si le répertoire n’existe pas, il est créé lors du premier lancement de Jboss.
+
+Le fichier ainsi définit permet au serveur HSqlDb de lancer 3 bases :
+
+    * jpatest : notre base de test
+    * localDB : la base utilisée par le serveur d’application pour les applications Web
+    * default : la base qui peut être définie pour peut être accéder via TCPIP
+
+Pour lancer le serveur, on ouvre une session DOS, on se positionne dans le répertoire : C:\jboss-4.2.0.GA\server\default\data\hypersonic
+
+Puis on tape la commande :
+
+java -cp C:\jboss-4.2.0.GA\server\default\lib\hsqldb.jar org.hsqldb.Server
+
+Le serveur se lance.
+
+On l’arrête en tapant Ctrl C. 
